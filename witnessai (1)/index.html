@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>
+      // Prevent any Vite HMR connection attempts before Vite client runs
+      (function() {
+        const OriginalWebSocket = window.WebSocket;
+        if (OriginalWebSocket) {
+          const MockWebSocket = function(url, protocols) {
+            if (typeof url === 'string' && (
+              url.includes('vite') || 
+              protocols === 'vite-hmr' || 
+              url.includes('/vite-hmr') || 
+              url.includes('hot-reload')
+            )) {
+              const self = Object.create(OriginalWebSocket.prototype);
+              Object.defineProperties(self, {
+                url: { value: url, writable: true, configurable: true, enumerable: true },
+                readyState: { value: 3, writable: true, configurable: true, enumerable: true },
+                bufferedAmount: { value: 0, writable: true, configurable: true, enumerable: true },
+                extensions: { value: '', writable: true, configurable: true, enumerable: true },
+                protocol: { value: '', writable: true, configurable: true, enumerable: true },
+                binaryType: { value: 'blob', writable: true, configurable: true, enumerable: true },
+                send: { value: () => {}, writable: true, configurable: true, enumerable: true },
+                close: { value: () => {}, writable: true, configurable: true, enumerable: true },
+                addEventListener: { value: () => {}, writable: true, configurable: true, enumerable: true },
+                removeEventListener: { value: () => {}, writable: true, configurable: true, enumerable: true },
+                onopen: { value: null, writable: true, configurable: true, enumerable: true },
+                onclose: { value: null, writable: true, configurable: true, enumerable: true },
+                onerror: { value: null, writable: true, configurable: true, enumerable: true },
+                onmessage: { value: null, writable: true, configurable: true, enumerable: true },
+              });
+              return self;
+            }
+            return new OriginalWebSocket(url, protocols);
+          };
+          MockWebSocket.prototype = OriginalWebSocket.prototype;
+          Object.assign(MockWebSocket, OriginalWebSocket);
+          window.WebSocket = MockWebSocket;
+        }
+
+        // Also globally catch and suppress any benign websocket unhandled rejections
+        window.addEventListener('unhandledrejection', function(event) {
+          const reason = event.reason;
+          const msg = reason?.message || String(reason || '');
+          if (msg.includes('WebSocket') || msg.includes('websocket') || msg.includes('Websocket')) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+        }, true);
+
+        window.addEventListener('error', function(event) {
+          const msg = event.message || '';
+          if (msg.includes('WebSocket') || msg.includes('websocket') || msg.includes('Websocket')) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+        }, true);
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Google AI Studio App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

@@ -1,0 +1,397 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --color-primary: #ffffff;
+  --color-secondary: #a1a1aa;
+  --color-accent: #3b82f6; /* Modern Blue */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* 80px */
+  }
+
+  body {
+    @apply bg-black text-white font-sans antialiased selection:bg-accent/30;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* Custom Utilities */
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  color: transparent;
+}
+
+.glass {
+  @apply bg-white/5 backdrop-blur-md border border-white/10;
+}
+
+.magnetic-button {
+  @apply transition-transform duration-300 ease-out;
+}
+
+/* --- 3D UTILITIES --- */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.perspective-2000 {
+  perspective: 2000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+/* 3D Floating Animations */
+@keyframes float3D {
+  0% {
+    transform: translateY(0px) rotateX(4deg) rotateY(-4deg) translateZ(0px);
+  }
+  50% {
+    transform: translateY(-12px) rotateX(-4deg) rotateY(4deg) translateZ(30px);
+  }
+  100% {
+    transform: translateY(0px) rotateX(4deg) rotateY(-4deg) translateZ(0px);
+  }
+}
+.animate-float-3d {
+  animation: float3D 6s ease-in-out infinite;
+}
+
+/* Orbiting Rings in 3D Space */
+@keyframes orbitX {
+  0% { transform: rotateX(70deg) rotateY(0deg) rotateZ(0deg); }
+  100% { transform: rotateX(70deg) rotateY(0deg) rotateZ(360deg); }
+}
+@keyframes orbitY {
+  0% { transform: rotateX(25deg) rotateY(70deg) rotateZ(0deg); }
+  100% { transform: rotateX(25deg) rotateY(70deg) rotateZ(360deg); }
+}
+@keyframes orbitZ {
+  0% { transform: rotateX(45deg) rotateY(-45deg) rotateZ(0deg); }
+  100% { transform: rotateX(45deg) rotateY(-45deg) rotateZ(360deg); }
+}
+
+.animate-orbit-x {
+  animation: orbitX 12s linear infinite;
+}
+.animate-orbit-y {
+  animation: orbitY 16s linear infinite;
+}
+.animate-orbit-z {
+  animation: orbitZ 20s linear infinite;
+}
+
+/* Hologram Scanning Line */
+@keyframes scanline {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.animate-scanline {
+  animation: scanline 4s linear infinite;
+}
+
+/* Custom 3D Tilt Hover effect helper transition */
+.tilt-card-transition {
+  transition: transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Hide scrollbar but allow scrolling */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* --- ACCESSIBILITY COMPLIANCE LIGHT MODE --- */
+.theme-compliance,
+html.theme-compliance,
+body.theme-compliance {
+  --color-accent: #1e40af !important; /* High contrast Deep Blue */
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* 1. Reset all dark backgrounds used throughout the project to pristine white */
+.theme-compliance .bg-\[\#040407\],
+.theme-compliance .bg-\[\#07070a\],
+.theme-compliance .bg-\[\#07070a\]\/80,
+.theme-compliance .bg-\[\#0b0b10\],
+.theme-compliance .bg-\[\#0b0b11\],
+.theme-compliance .bg-\[\#0f0f15\],
+.theme-compliance .bg-\[\#0f0f15\]\/80,
+.theme-compliance .bg-\[\#0e0e15\],
+.theme-compliance .bg-\[\#0e0e14\],
+.theme-compliance .bg-\[\#0d0d12\],
+.theme-compliance .bg-\[\#0c0c12\],
+.theme-compliance .bg-\[\#08080c\],
+.theme-compliance .bg-\[\#0c0c14\],
+.theme-compliance .bg-\[\#06060a\],
+.theme-compliance .bg-\[\#08080f\],
+.theme-compliance .bg-\[\#11111a\],
+.theme-compliance .bg-\[\#11111b\],
+.theme-compliance .bg-\[\#161622\],
+.theme-compliance .bg-\[\#09090d\],
+.theme-compliance .bg-\[\#09090d\]\/60,
+.theme-compliance .bg-\[\#0e0e15\]\/60,
+.theme-compliance .bg-zinc-950,
+.theme-compliance .bg-zinc-900,
+.theme-compliance .bg-black {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  background: #ffffff !important;
+}
+
+/* 2. Specific card components: threat core, stats cards, policy cards, playground wells */
+.theme-compliance .tilt-card-transition,
+.theme-compliance [ref="cardRef"],
+.theme-compliance .bg-gradient-to-b,
+.theme-compliance .bg-gradient-to-r,
+.theme-compliance .bg-gradient-to-tr {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  background: #ffffff !important;
+}
+
+/* 3. Style small wells, list rows, inactive tags, and secondary containers to a soft, readable slate gray */
+.theme-compliance .bg-white\/3,
+.theme-compliance .bg-white\/5,
+.theme-compliance .bg-white\/10,
+.theme-compliance .bg-white\/15,
+.theme-compliance .bg-zinc-900\/50,
+.theme-compliance .bg-zinc-800\/40,
+.theme-compliance .bg-zinc-800\/50,
+.theme-compliance .bg-zinc-800\/80,
+.theme-compliance .bg-zinc-800,
+.theme-compliance .bg-accent\/5,
+.theme-compliance .bg-accent\/10,
+.theme-compliance .bg-blue-500\/5,
+.theme-compliance .bg-\[\#0f0f15\]\/80,
+.theme-compliance .bg-\[\#0f0f15\]\/50,
+.theme-compliance .bg-\[\#0e0e15\]\/60 {
+  background-color: #f1f5f9 !important;
+  background: #f1f5f9 !important;
+}
+
+/* 4. High-Contrast Clear Borders */
+.theme-compliance .border,
+.theme-compliance .border-white\/5,
+.theme-compliance .border-white\/10,
+.theme-compliance .border-white\/15,
+.theme-compliance .border-white\/20,
+.theme-compliance .border-accent\/20,
+.theme-compliance .border-accent\/30,
+.theme-compliance .border-zinc-800,
+.theme-compliance .border-zinc-700,
+.theme-compliance .border-zinc-800\/50 {
+  border-color: #64748b !important;
+  border-width: 1.5px !important;
+}
+
+/* 5. Typography and Contrast Enhancements */
+.theme-compliance h1,
+.theme-compliance h2,
+.theme-compliance h3,
+.theme-compliance h4,
+.theme-compliance h5,
+.theme-compliance h6,
+.theme-compliance th {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+.theme-compliance p,
+.theme-compliance li,
+.theme-compliance td,
+.theme-compliance label {
+  color: #1e293b !important;
+  font-weight: 500 !important;
+}
+
+/* Force dark/white text classes to adapt */
+.theme-compliance .text-white,
+.theme-compliance .text-zinc-100,
+.theme-compliance .text-zinc-200,
+.theme-compliance .text-zinc-300,
+.theme-compliance .text-slate-100,
+.theme-compliance .text-slate-200 {
+  color: #0f172a !important;
+}
+
+.theme-compliance .text-zinc-400,
+.theme-compliance .text-zinc-500,
+.theme-compliance .text-slate-400,
+.theme-compliance .text-slate-500,
+.theme-compliance .text-secondary {
+  color: #475569 !important;
+}
+
+.theme-compliance .text-zinc-600,
+.theme-compliance .text-slate-600 {
+  color: #576579 !important;
+}
+
+/* 6. Inputs & Dropdowns */
+.theme-compliance input,
+.theme-compliance textarea,
+.theme-compliance select {
+  background-color: #ffffff !important;
+  border: 2px solid #475569 !important;
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+.theme-compliance input::placeholder,
+.theme-compliance textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* 7. Navigation & Tabs Bar UI */
+.theme-compliance nav {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-bottom: 2.5px solid #475569 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
+}
+
+.theme-compliance nav .text-white,
+.theme-compliance nav span,
+.theme-compliance nav p {
+  color: #0f172a !important;
+}
+
+/* Tab button wrap */
+.theme-compliance nav .shrink-0,
+.theme-compliance nav div.shrink-0 {
+  background-color: #f1f5f9 !important;
+  border: 2px solid #475569 !important;
+}
+
+/* Active Tab button state */
+.theme-compliance nav button[class*="bg-accent"],
+.theme-compliance .bg-accent\/15 {
+  background-color: #1e40af !important;
+  color: #ffffff !important;
+  border: 2px solid #1e40af !important;
+}
+
+.theme-compliance nav button[class*="bg-accent"] *,
+.theme-compliance .bg-accent\/15 * {
+  color: #ffffff !important;
+}
+
+/* Inactive tabs */
+.theme-compliance nav button:not([class*="bg-accent"]):not(.bg-accent) {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+.theme-compliance nav button:not([class*="bg-accent"]):not(.bg-accent):hover {
+  background-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* Interactive elements hovers */
+.theme-compliance button:not(.bg-accent):not(.bg-blue-600):not(.bg-red-600):hover,
+.theme-compliance .cursor-pointer:hover {
+  background-color: #cbd5e1 !important;
+}
+
+/* Solid Primary Buttons & Badges styling */
+.theme-compliance button.bg-accent,
+.theme-compliance .bg-accent,
+.theme-compliance button.bg-blue-600,
+.theme-compliance .bg-blue-600 {
+  background-color: #1e40af !important;
+  color: #ffffff !important;
+  border: 2px solid #1e40af !important;
+}
+
+.theme-compliance button.bg-accent *,
+.theme-compliance .bg-accent *,
+.theme-compliance button.bg-blue-600 *,
+.theme-compliance .bg-blue-600 * {
+  color: #ffffff !important;
+}
+
+/* 8. Semantic status metrics (Secure Green, Critical Red, Warn Yellow) */
+.theme-compliance .text-green-400,
+.theme-compliance .text-emerald-400 {
+  color: #15803d !important;
+}
+.theme-compliance .text-red-400,
+.theme-compliance .text-rose-400 {
+  color: #b91c1c !important;
+}
+.theme-compliance .text-yellow-400,
+.theme-compliance .text-amber-400 {
+  color: #a16207 !important;
+}
+
+/* Semantic warning blocks */
+.theme-compliance .bg-green-500\/10,
+.theme-compliance .bg-emerald-500\/10,
+.theme-compliance .bg-emerald-500\/5 {
+  background-color: #f0fdf4 !important;
+  border: 2px solid #15803d !important;
+}
+.theme-compliance .bg-green-500\/10 *,
+.theme-compliance .bg-emerald-500\/10 *,
+.theme-compliance .bg-emerald-500\/5 * {
+  color: #15803d !important;
+}
+
+.theme-compliance .bg-red-500\/10,
+.theme-compliance .bg-red-500\/5 {
+  background-color: #fef2f2 !important;
+  border: 2px solid #b91c1c !important;
+}
+.theme-compliance .bg-red-500\/10 *,
+.theme-compliance .bg-red-500\/5 * {
+  color: #b91c1c !important;
+}
+
+.theme-compliance .bg-yellow-500\/10,
+.theme-compliance .bg-amber-500\/10 {
+  background-color: #fefbeb !important;
+  border: 2px solid #a16207 !important;
+}
+.theme-compliance .bg-yellow-500\/10 *,
+.theme-compliance .bg-amber-500\/10 * {
+  color: #a16207 !important;
+}
+
+/* 9. Recharts SVG elements visibility */
+.theme-compliance .recharts-cartesian-axis-tick-value,
+.theme-compliance .recharts-text {
+  fill: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+.theme-compliance line.recharts-cartesian-grid-line {
+  stroke: #cbd5e1 !important;
+}
+.theme-compliance .recharts-cartesian-axis-line,
+.theme-compliance .recharts-cartesian-axis-tick-line {
+  stroke: #475569 !important;
+}
+
+
